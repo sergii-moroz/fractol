@@ -2,14 +2,16 @@ NAME = fractol
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-CFLAGS =
 RM = rm -rf
+MAKE = make
 
 MLX_DIR = minilibx
 MLX = mlx
+MLX_LIB = ./$(MLX_DIR)/lib$(MLX).a
 
 FT_DIR = libft
 FT = ft
+FT_LIB = ./$(FT_DIR)/lib$(FT).a
 
 LIBS =	-L$(FT_DIR) -l$(FT) \
 		-L$(MLX_DIR) -l$(MLX) -framework OpenGL -framework AppKit
@@ -29,14 +31,25 @@ SRCS =	main.c \
 		utils_check_input.c \
 		utils_math.c \
 		utils_errors.c \
-		utils_settings.c
-#		leaks_checker.c
+		utils_hooks_1.c \
+		utils_hooks_2.c \
+		utils_hilbert_curve.c
+
 OBJS_DIR = obj
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.c=.o))
 
-all: $(NAME)
+all: $(MLX_LIB) $(NAME)
 
-$(NAME): $(OBJS_DIR) $(OBJS)
+$(MLX_LIB):
+	@if [ ! -d $(MLX_DIR) ]; then \
+		git clone https://github.com/pasqualerossi/minilibx.git $(MLX_DIR) && \
+		$(MAKE) -C $(MLX_DIR); \
+	fi
+
+$(FT_LIB):
+	cd ./$(FT_DIR) && $(MAKE) bonus && $(MAKE) clean
+
+$(NAME): $(FT_LIB) $(OBJS_DIR) $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $@
 
 $(OBJS_DIR):
@@ -50,10 +63,8 @@ clean:
 
 fclean: clean
 	$(RM) $(NAME)
+	cd ./$(FT_DIR) && $(MAKE) fclean
 
 re: fclean all
-
-run: all
-	./fractol 2 -0.6 0.6
 
 .PHONY: all clean fclean re

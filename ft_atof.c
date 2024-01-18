@@ -6,7 +6,7 @@
 /*   By: smoroz <smoroz@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 16:43:53 by smoroz            #+#    #+#             */
-/*   Updated: 2024/01/10 16:45:11 by smoroz           ###   ########.fr       */
+/*   Updated: 2024/01/12 21:58:36 by smoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,12 @@ static double	ft_fract(char *s)
 double	ft_atof(char *s)
 {
 	double	frac_part;
-	double	pow;
 	long	int_part;
 	int		sign;
 
 	int_part = 0;
 	frac_part = 0.0;
 	sign = 1;
-	pow = 1.0;
 	while (ft_isspace(*s))
 		s++;
 	if (*s == '+' || *s == '-')

@@ -3,54 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   fractol.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smoroz <smoroz@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: smoroz <smoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 17:20:23 by smoroz            #+#    #+#             */
-/*   Updated: 2024/01/12 11:21:18 by smoroz           ###   ########.fr       */
+/*   Updated: 2024/01/17 12:11:39 by smoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
-# define WIDTH 1920/2
-# define HEIGHT 1080/2
+# define WIDTH 512
+# define HEIGHT 512
 # define MAX_ITERATION 8
+# define RSIZE 32
 
 # define MANDELBROT 1
 # define MANDELBROT4 2
 # define BURNINGSHIP 3
 # define JULIA 4
-
-# define KEY_A 0
-# define KEY_S 1
-# define KEY_D 2
-# define KEY_W 13
-# define KEY_R 15
-# define KEY_1 18
-# define KEY_2 19
-# define KEY_3 20
-# define KEY_4 21
-# define KEY_5 23
-# define KEY_6 22
-# define KEY_7 26
-# define KEY_8 28
-# define KEY_9 25
-# define KEY_0 29
-# define KEY_SPACE 49
-# define KEY_ESC 53
-# define KEY_PLUS 69
-# define KEY_MINUS 78
-# define KEY_NUM_1 83
-# define KEY_NUM_2 84
-# define KEY_NUM_3 85
-# define KEY_NUM_4 86
-# define KEY_PAGEUP 116
-# define KEY_PAGEDOWN 121
-# define KEY_LEFT 123
-# define KEY_RIGHT 124
-# define KEY_DOWN 125
-# define KEY_UP 126
 
 # define M_LMB 1
 # define M_RMB 2
@@ -65,6 +36,19 @@
 # define C_PASTEL_GREEN 5
 # define C_SIMPLE 6
 
+# include "minilibx/mlx.h"
+# include "minilibx_keys.h"
+# include "minilibx_events.h"
+# include "libft/libft.h"
+# include <stdlib.h>
+# include <stdio.h>
+
+typedef struct s_int_point
+{
+	int	x;
+	int	y;
+}		t_int_point;
+
 typedef struct s_img
 {
 	void	*img_ptr;
@@ -76,12 +60,12 @@ typedef struct s_img
 
 typedef struct s_world
 {
-	double	moveX;
-	double	moveY;
+	double	move_x;
+	double	move_y;
 	double	zoom;
 }			t_world;
 
-typedef struct	s_complex
+typedef struct s_complex
 {
 	double	real;
 	double	imag;
@@ -98,14 +82,10 @@ typedef struct s_vars
 	int			c_idx;
 	int			cur_iteration;
 	int			max_iteration;
-//	int			n_iter;
 	int			color_palette;
+	int			need_update;
+	int			ri;
 }				t_vars;
-
-# include "minilibx/mlx.h"
-# include "libft/libft.h"
-# include <stdlib.h>
-# include <stdio.h> // TODO
 
 //	init.c
 void		app_init(t_vars *vars);
@@ -125,37 +105,33 @@ int			get_b(int trgb);
 
 //	utils_color_interpol.c
 int			color_manager(int n, t_vars *vars);
-int			hsv2rgb(int hr, int sg, int vb);
-//void		rgb2hsv(double r, double g, double b);
-//int			lerp_colors(int n, int c1, int c2, int max_iteration);
-//int			log_lerp_colors(int n, int c1, int c2, int max_iteration);
-//int			log_grayscale(int n, int max_iteration);
 
 //	render.c
-void		render(t_vars *vars);
 int			iteration_at_pixel(int x, int y, t_vars *vars);
+void		render_h(t_vars *vars);
 
 //	hooks.c
 int			destroy_window(t_vars *vars);
 int			keys_hook(int keycode, t_vars *vars);
 int			mouse_hook(int event, int x, int y, t_vars *vars);
+int			mouse_track_coord(int x, int y, t_vars *vars);
 
 //	ft_atof.c
 double		ft_atof(char *s);
 
 //	ft_isvalid_int.c
-int		ft_isvalid_int(const char *str);
+int			ft_isvalid_int(const char *str);
 
 //	ft_isvalid_float.c
-int		ft_isvalid_float(const char *str);
+int			ft_isvalid_float(const char *str);
 
 //	utils_check_input.c
-void	ft_check_input(int argc, char **argv, t_vars *vars);
+void		ft_check_input(int argc, char **argv, t_vars *vars);
 
 //	utils_errors.c
-void	ft_error_fractal_type(void);
-void	ft_error_julia1(void);
-void	ft_error_julia2(void);
+void		ft_error_fractal_type(void);
+void		ft_error_julia1(void);
+void		ft_error_julia2(void);
 
 //	utils_math.c
 int			ft_min(int a, int b);
@@ -166,13 +142,20 @@ t_complex	screen2coord(int x, int y, t_vars *vars);
 t_complex	sum_complex(t_complex z1, t_complex z2);
 t_complex	square_complex(t_complex z);
 double		abs_complex(t_complex z);
-//t_complex	mult_complex(t_complex a, t_complex b);
-//t_complex	create_z(double real, double imag);
-//t_complex	div_complex(t_complex a, t_complex b);
 
-//	utils_settings.c
-void	inc_view_iteration(t_vars *vars);
-void	dec_view_iteration(t_vars *vars);
-void	change_color_palette(t_vars *vars);
+//	utils_hooks_1.c
+void		inc_view_iteration(t_vars *vars);
+void		dec_view_iteration(t_vars *vars);
+void		change_color_palette(t_vars *vars);
+void		change_fractal_type(int keycode, t_vars *vars);
+void		change_julia_set(int keycode, t_vars *vars);
+
+//	utils_hooks_2.c
+void		translate_view(int dx, int dy, t_vars *vars);
+void		reset_view(t_vars *vars);
+int			update(t_vars *vars);
+
+//	utils_hilbert_curve.c
+t_int_point	hindex2xy(int hindex, int order);
 
 #endif

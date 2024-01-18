@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_complex_math.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smoroz <smoroz@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: smoroz <smoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:05:10 by smoroz            #+#    #+#             */
-/*   Updated: 2024/01/11 20:24:47 by smoroz           ###   ########.fr       */
+/*   Updated: 2024/01/16 12:10:24 by smoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ t_complex	screen2coord(int x, int y, t_vars *vars)
 
 	min_screen = ft_min(WIDTH, HEIGHT);
 	z.real = (x - 0.5 * WIDTH) * vars->world.zoom / min_screen \
-		+ vars->world.moveX;
+		+ vars->world.move_x;
 	z.imag = (-y + 0.5 * HEIGHT) * vars->world.zoom / min_screen \
-		+ vars->world.moveY;
+		+ vars->world.move_y;
 	return (z);
 }
 
