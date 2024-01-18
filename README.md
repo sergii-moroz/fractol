@@ -22,7 +22,7 @@ for Julia
 `1` to `0` - change complex constant $C$ (only for Julia fractal)
 
 #### Numpad
-`+`, `-` - increase or decrease the picture quality (numper of iteration)
+`+`, `-` - increase or decrease the picture quality (number of iteration)
 
 `1` - Mandelbrot: $Z_{n+1} = Z_n^2 + C$
 
