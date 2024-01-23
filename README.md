@@ -1,5 +1,19 @@
 # fractol
-Fractol is a 42 School project. The purpose of this project is to create a fractal renderer.
+Fractol is a 42 School project. The project designed to render and display various types of fractals in real-time. Fractals are complex mathematical structures that exhibit self-similarity at different scales. This project provides an interactive platform for users to explore and appreciate the beauty of these intricate mathematical patterns.
+
+## Quick Start
+
+To quickly get started with Fractol, follow these steps:
+1. Clone the Repository
+2. Navigate to the Project Directory
+3. Build the Project
+4. Run Fractol
+```bash
+https://github.com/sergii-moroz/fractol.git
+cd fractol
+make
+./fractol 1
+```
 
 ## Usage
 
